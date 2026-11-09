@@ -4,6 +4,7 @@ import { AgentCompanion } from "./components/AgentCompanion";
 import { AgentContext } from "./components/agent-context";
 import { Buddy, type BuddyMood } from "./components/Buddy";
 import { PrBoard } from "./components/PrBoard";
+import { BoardPrototype, boardVariant } from "./prototype/board/BoardPrototype";
 import { GroupClaudeButton } from "./components/ClaudeButton";
 import { PrCard } from "./components/PrCard";
 import { PrTable } from "./components/PrTable";
@@ -1427,7 +1428,12 @@ export function App() {
       <AuthorFilterContext.Provider value={authorFilter}>
       <StaleCloseContext.Provider value={setClosingPr}>
       {viewMode === "board" ? (
-        <PrBoard prs={filtered} all={allPrs} onOpen={openPr} focus={boardFocus} onClearFilters={clearFilters} />
+        // PROTOTYPE: Board redesign variants, dev builds with ?variant= only.
+        boardVariant() ? (
+          <BoardPrototype prs={filtered} all={allPrs} onOpen={openPr} />
+        ) : (
+          <PrBoard prs={filtered} all={allPrs} onOpen={openPr} focus={boardFocus} onClearFilters={clearFilters} />
+        )
       ) : viewMode === "cozy" ? (
         tableRows.length > 0 && (
           <PrTable
